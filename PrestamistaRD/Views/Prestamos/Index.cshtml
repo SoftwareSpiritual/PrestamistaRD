@@ -1,0 +1,343 @@
+﻿@model IEnumerable<PrestamistaRD.Models.Prestamo>
+@{
+    ViewData["Title"] = "Préstamos";
+}
+
+<div class="container mt-4">
+    <!-- Encabezado con botón -->
+    <div class="d-flex justify-content-between align-items-center mb-4" data-aos="fade-down">
+        <h3 class="fw-bold">
+            <i class="bi bi-cash-stack text-success"></i> Préstamos
+        </h3>
+        <a asp-action="Create" class="btn btn-success shadow-sm" data-aos="fade-left">
+            <i class="bi bi-plus-circle"></i> Nuevo Préstamo
+        </a>
+    </div>
+
+    <!-- Tabla de préstamos -->
+    <div class="card shadow border-0 rounded-4" data-aos="zoom-in">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle w-100">
+                    <thead class="table-light">
+                        <tr class="text-center">
+                            <th class="text-start"><i class="bi bi-person"></i> Cliente</th>
+                            <th><i class="bi bi-cash-coin text-secondary"></i> Capital Inicial</th>
+                            <th><i class="bi bi-wallet2 text-success"></i> Saldo Pendiente</th>
+                            <th><i class="bi bi-percent text-warning"></i> Interés %</th>
+                            <th><i class="bi bi-calendar-event text-info"></i> Fecha Pago</th>
+                            <th><i class="bi bi-flag"></i> Estado</th>
+                            <th><i class="bi bi-gear"></i> Acciones</th>
+                            <th><i class="bi bi-list-ul"></i> Detalles</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Any())
+                        {
+                            var delay = 100;
+                            @foreach (var item in Model)
+                            {
+                                var collapseId = $"collapse-{item.Id}";
+
+                                <tr data-aos="fade-up" data-aos-delay="@delay">
+                                    <td class="text-start">@item.ClienteNombre</td>
+
+                                    <!-- Capital inicial -->
+                                    <td class="text-center text-secondary fw-bold">
+                                        RD$ @item.MontoOriginal.ToString("N2")
+                                    </td>
+
+                                    <!-- Saldo pendiente -->
+                                    <td class="text-center text-success fw-bold">
+                                        RD$ @item.MontoCapital.ToString("N2")
+                                    </td>
+
+                                    <!-- Interés -->
+                                    <td class="text-center text-warning fw-bold">
+                                        @item.PorcentajeMensual %
+                                    </td>
+
+                                    <!-- Fecha de pago -->
+                                    <td class="text-center">
+                                        @item.DiaPago.ToString("dd/MM/yyyy")
+                                    </td>
+
+                                    <!-- Estado -->
+                                    <td class="text-center">
+                                        @if (item.Estado == "Activo")
+                                        {
+                                            <span class="badge bg-success">
+                                                <i class="bi bi-check-circle"></i> Activo
+                                            </span>
+                                        }
+                                        else if (item.Estado == "Atrasado")
+                                        {
+                                            <span class="badge bg-danger">
+                                                <i class="bi bi-exclamation-triangle"></i> Atrasado
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">
+                                                <i class="bi bi-check2-all"></i> Pagado
+                                            </span>
+                                        }
+                                    </td>
+
+                                    <!-- Acciones -->
+                                    <td class="text-center">
+                                        <div class="btn-group">
+                                            <!-- 🔹 Reenganchar -->
+                                            <a asp-action="Ampliar" asp-route-id="@item.Id"
+                                               class="btn btn-sm btn-outline-info" title="Reenganchar" data-aos="zoom-in" data-aos-delay="250">
+                                                <i class="bi bi-plus-circle"></i>
+                                            </a>
+                                            <!-- Eliminar -->
+                                            <a href="javascript:void(0)"
+                                               class="btn btn-sm btn-outline-danger" title="Eliminar"
+                                               onclick="confirmarEliminar('@Url.Action("Delete", "Prestamos", new { id = item.Id })')"
+                                               data-aos="zoom-in" data-aos-delay="300">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+
+                                    <!-- Botón para ver detalles -->
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-outline-primary"
+                                                type="button"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#@collapseId"
+                                                aria-expanded="false"
+                                                aria-controls="@collapseId"
+                                                data-aos="flip-left" data-aos-delay="350">
+                                            <i class="bi bi-list-ul"></i> Ver Detalles
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <!-- 🔹 Detalles completos del préstamo -->
+                                <tr class="collapse bg-light" id="@collapseId">
+                                    <td colspan="8">
+                                        <div class="p-3" data-aos="fade-right">
+                                            <h6 class="fw-bold text-primary mb-3">
+                                                <i class="bi bi-file-earmark-text text-primary"></i> Información del Préstamo
+                                            </h6>
+                                            <dl class="row">
+                                                <dt class="col-sm-3 text-muted">
+                                                    <i class="bi bi-cash-coin text-secondary"></i> Capital Inicial
+                                                </dt>
+                                                <dd class="col-sm-9 fw-bold text-secondary">
+                                                    RD$ @item.MontoOriginal.ToString("N2")
+                                                </dd>
+
+                                                <dt class="col-sm-3 text-muted">
+                                                    <i class="bi bi-wallet2 text-success"></i> Saldo Actual
+                                                </dt>
+                                                <dd class="col-sm-9 fw-bold text-success">
+                                                    RD$ @item.MontoCapital.ToString("N2")
+                                                </dd>
+
+                                                <dt class="col-sm-3 text-muted">
+                                                    <i class="bi bi-percent text-warning"></i> Interés Mensual
+                                                </dt>
+                                                <dd class="col-sm-9 text-warning fw-bold">
+                                                    @item.PorcentajeMensual %
+                                                </dd>
+
+                                                <dt class="col-sm-3 text-muted">
+                                                    <i class="bi bi-calendar-check text-info"></i> Fecha Desembolso
+                                                </dt>
+                                                <dd class="col-sm-9">@item.FechaDesembolso.ToString("dd/MM/yyyy")</dd>
+
+                                                <dt class="col-sm-3 text-muted">
+                                                    <i class="bi bi-calendar-event text-primary"></i> Día de Pago
+                                                </dt>
+                                                <dd class="col-sm-9">@item.DiaPago.ToString("dd/MM/yyyy")</dd>
+
+                                                <dt class="col-sm-3 text-muted">
+                                                    <i class="bi bi-exclamation-octagon text-danger"></i> Mora
+                                                </dt>
+                                                <dd class="col-sm-9 text-danger fw-bold">
+                                                    RD$ @item.MoraFija.ToString("N2")
+                                                </dd>
+
+                                                <dt class="col-sm-3 text-muted">
+                                                    <i class="bi bi-flag text-dark"></i> Estado
+                                                </dt>
+                                                <dd class="col-sm-9">
+                                                    @if (item.Estado == "Activo")
+                                                    {
+                                                        <span class="badge bg-success"><i class="bi bi-check-circle"></i> Activo</span>
+                                                    }
+                                                    else if (item.Estado == "Atrasado")
+                                                    {
+                                                        <span class="badge bg-danger"><i class="bi bi-exclamation-triangle"></i> Atrasado</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="badge bg-secondary"><i class="bi bi-check2-all"></i> Pagado</span>
+                                                    }
+                                                </dd>
+
+                                                <dt class="col-sm-3 text-muted">
+                                                    <i class="bi bi-chat-left-text text-secondary"></i> Observación
+                                                </dt>
+                                                <dd class="col-sm-9">@item.Observacion</dd>
+                                            </dl>
+
+                                            <!-- 🔹 Pagos -->
+                                            <h6 class="fw-bold text-success mt-4">
+                                                <i class="bi bi-cash-stack"></i> Pagos Realizados
+                                            </h6>
+                                            @if (item.Pagos != null && item.Pagos.Any())
+                                            {
+                                                <div class="table-responsive mb-3">
+                                                    <table class="table table-sm table-bordered">
+                                                        <thead class="table-light text-center">
+                                                            <tr>
+                                                                <th>Fecha</th>
+                                                                <th>Periodo</th>
+                                                                <th>Interés</th>
+                                                                <th>Mora</th>
+                                                                <th>Capital</th>
+                                                                <th>Total Pagado</th>
+                                                                <th>Tipo</th>
+                                                                <th>Frecuencia</th>
+                                                                <th>Observación</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (var p in item.Pagos!)
+                                                            {
+                                                                <tr class="text-center">
+                                                                    <td>@p.FechaPago.ToString("dd/MM/yyyy")</td>
+                                                                    <td>@p.Periodo</td>
+                                                                    <td class="text-primary">RD$ @p.MontoInteres.ToString("N2")</td>
+                                                                    <td class="text-danger">RD$ @p.MontoMora.ToString("N2")</td>
+                                                                    <td class="text-success">RD$ @p.MontoCapital.ToString("N2")</td>
+                                                                    <td class="fw-bold">RD$ @p.TotalPagado.ToString("N2")</td>
+                                                                    <td>@p.TipoPago</td>
+                                                                    <td>@p.Frecuencia</td>
+                                                                    <td>@p.Observacion</td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                        <tfoot class="table-light fw-bold">
+                                                            <tr class="text-center">
+                                                                <td colspan="2" class="text-end">Totales:</td>
+                                                                <td class="text-primary">
+                                                                    RD$ @item.Pagos.Sum(x => x.MontoInteres).ToString("N2")
+                                                                </td>
+                                                                <td class="text-danger">
+                                                                    RD$ @item.Pagos.Sum(x => x.MontoMora).ToString("N2")
+                                                                </td>
+                                                                <td class="text-success">
+                                                                    RD$ @item.Pagos.Sum(x => x.MontoCapital).ToString("N2")
+                                                                </td>
+                                                                <td class="fw-bold">
+                                                                    RD$ @item.Pagos.Sum(x => x.TotalPagado).ToString("N2")
+                                                                </td>
+                                                                <td colspan="3"></td>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <p class="text-muted fst-italic">
+                                                    <i class="bi bi-inbox"></i> No hay pagos registrados.
+                                                </p>
+                                            }
+
+                                            <!-- 🔹 Historial de Ampliaciones -->
+                                            @if (item.Ampliaciones != null && item.Ampliaciones.Any())
+                                            {
+                                                <h6 class="fw-bold text-info mt-4">
+                                                    <i class="bi bi-arrow-repeat"></i> Historial de Ampliaciones
+                                                </h6>
+                                                <div class="table-responsive">
+                                                    <table class="table table-sm table-bordered mt-2">
+                                                        <thead class="table-light text-center">
+                                                            <tr>
+                                                                <th>Fecha</th>
+                                                                <th>Monto Ampliado</th>
+                                                                <th>Observación</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (var amp in item.Ampliaciones)
+                                                            {
+                                                                <tr>
+                                                                    <td class="text-center">@amp.Fecha.ToString("dd/MM/yyyy")</td>
+                                                                    <td class="text-success fw-bold text-center">RD$ @amp.MontoAmpliado.ToString("N2")</td>
+                                                                    <td>@amp.Observacion</td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <p class="text-muted fst-italic mt-3">
+                                                    <i class="bi bi-info-circle"></i> No hay ampliaciones registradas para este préstamo.
+                                                </p>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                delay += 100;
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="8" class="text-center text-muted" data-aos="zoom-in">
+                                    <i class="bi bi-inbox"></i> No hay préstamos registrados
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function confirmarEliminar(url) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "Esta acción eliminará el préstamo de forma permanente.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: '<i class="bi bi-trash"></i> Sí, eliminar',
+                cancelButtonText: 'Cancelar',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = url;
+                }
+            });
+        }
+    </script>
+
+    <!-- 🔹 AOS Animations -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 900,
+            offset: 100,
+            easing: 'ease-in-out',
+            once: true
+        });
+    </script>
+}

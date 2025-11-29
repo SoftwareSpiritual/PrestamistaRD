@@ -1,0 +1,241 @@
+﻿@model PrestamistaRD.Models.DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container mt-4">
+    <h2 class="fw-bold text-center mb-5" data-aos="fade-down">
+        <i class="bi bi-speedometer2 text-primary"></i> Panel de Control
+    </h2>
+
+    <!-- 🔹 Fila con 4 tarjetas principales -->
+    <div class="row g-4">
+        <!-- Clientes -->
+        <div class="col-md-3" data-aos="zoom-in">
+            <div class="card card-dashboard h-100 card-clientes">
+                <div class="card-body text-center text-white">
+                    <i class="bi bi-people fs-1"></i>
+                    <h5 class="mt-2">Clientes</h5>
+                    <h3 class="fw-bold counter">@Model.TotalClientes</h3>
+                    <p>Registrados</p>
+                    <a asp-controller="Clientes" asp-action="Index" class="btn btn-light btn-sm">Ver más</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Préstamos Activos -->
+        <div class="col-md-3" data-aos="zoom-in" data-aos-delay="100">
+            <div class="card card-dashboard h-100 card-prestamos">
+                <div class="card-body text-center text-white">
+                    <i class="bi bi-list-check fs-1"></i>
+                    <h5 class="mt-2">Préstamos Activos</h5>
+                    <h3 class="fw-bold counter">@Model.TotalPrestamosActivos</h3>
+                    <p>Cantidad</p>
+                    <a asp-controller="Prestamos" asp-action="Index" class="btn btn-light btn-sm">Ver más</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Capital Prestado -->
+        <div class="col-md-3" data-aos="zoom-in" data-aos-delay="200">
+            <div class="card card-dashboard h-100 card-capital">
+                <div class="card-body text-center text-white">
+                    <i class="bi bi-cash-coin fs-1"></i>
+                    <h5 class="mt-2">Capital Prestado</h5>
+                    <h3 class="fw-bold counter" data-prefix="RD$ ">@Model.TotalCapitalPrestado.ToString("N2")</h3>
+                    <p>Monto en préstamos</p>
+                    <a asp-controller="Prestamos" asp-action="Index" class="btn btn-light btn-sm">Ver más</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagos Recibidos -->
+        <div class="col-md-3" data-aos="zoom-in" data-aos-delay="300">
+            <div class="card card-dashboard h-100 card-pagos">
+                <div class="card-body text-center text-white">
+                    <i class="bi bi-receipt fs-1"></i>
+                    <h5 class="mt-2">Pagos Recibidos</h5>
+                    <h3 class="fw-bold counter" data-prefix="RD$ ">@Model.TotalPagos.ToString("N2")</h3>
+                    <p>Ingresos</p>
+                    <a asp-controller="Pagos" asp-action="Index" class="btn btn-light btn-sm">Ver más</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🔹 Segunda fila con indicadores -->
+    <div class="row g-4 mt-3">
+        <!-- Intereses Generados -->
+        <div class="col-md-3" data-aos="fade-up">
+            <div class="card card-dashboard h-100 card-intereses">
+                <div class="card-body text-center text-white">
+                    <i class="bi bi-percent fs-1"></i>
+                    <h5 class="mt-2">Intereses Generados</h5>
+                    <h3 class="fw-bold counter" data-prefix="RD$ ">@Model.TotalIntereses.ToString("N2")</h3>
+                    <p>Sobre préstamos</p>
+                    <a asp-controller="Reportes" asp-action="Index" class="btn btn-light btn-sm">Ver más</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pendiente por Cobrar -->
+        <div class="col-md-3" data-aos="fade-up" data-aos-delay="100">
+            <div class="card card-dashboard h-100 card-pendiente">
+                <div class="card-body text-center text-white">
+                    <i class="bi bi-graph-up fs-1"></i>
+                    <h5 class="mt-2">Pendiente por Cobrar</h5>
+                    <h3 class="fw-bold counter" data-prefix="RD$ ">@Model.TotalPendiente.ToString("N2")</h3>
+                    <p>Capital</p>
+                    <a asp-controller="Reportes" asp-action="Index" class="btn btn-light btn-sm">Ver más</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Préstamos Pagados -->
+        <div class="col-md-3" data-aos="fade-up" data-aos-delay="200">
+            <div class="card card-dashboard h-100 card-pagados">
+                <div class="card-body text-center text-white">
+                    <i class="bi bi-check2-circle fs-1"></i>
+                    <h5 class="mt-2">Préstamos Pagados</h5>
+                    <h3 class="fw-bold counter">@Model.TotalPrestamosPagados</h3>
+                    <p>Finalizados</p>
+                    <a asp-controller="Prestamos" asp-action="Index" class="btn btn-light btn-sm">Ver más</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Préstamos Atrasados -->
+        <div class="col-md-3" data-aos="fade-up" data-aos-delay="300">
+            <div class="card card-dashboard h-100 card-atrasados">
+                <div class="card-body text-center text-white">
+                    <i class="bi bi-exclamation-octagon fs-1"></i>
+                    <h5 class="mt-2">Préstamos Atrasados</h5>
+                    <h3 class="fw-bold counter">@Model.TotalPrestamosAtrasados</h3>
+                    <p>Con mora</p>
+                    <a asp-controller="Prestamos" asp-action="Index" class="btn btn-light btn-sm">Ver más</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🔹 Tercera fila -->
+    <div class="row g-4 mt-3 justify-content-center">
+        <!-- Mora Acumulada -->
+        <div class="col-md-4" data-aos="flip-left">
+            <div class="card card-dashboard h-100 card-mora">
+                <div class="card-body text-center text-white">
+                    <i class="bi bi-exclamation-triangle fs-1"></i>
+                    <h5 class="mt-2">Mora Acumulada</h5>
+                    <h3 class="fw-bold counter" data-prefix="RD$ ">@Model.TotalMora.ToString("N2")</h3>
+                    <p>De todos los préstamos</p>
+                    <a asp-controller="Reportes" asp-action="Index" class="btn btn-light btn-sm">Ver más</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Abonos a Capital -->
+        <div class="col-md-4" data-aos="flip-right">
+            <div class="card card-dashboard h-100 card-abonos">
+                <div class="card-body text-center text-white">
+                    <i class="bi bi-wallet2 fs-1"></i>
+                    <h5 class="mt-2">Abonos a Capital</h5>
+                    <h3 class="fw-bold counter" data-prefix="RD$ ">@Model.TotalAbonos.ToString("N2")</h3>
+                    <p>Reducen saldo</p>
+                    <a asp-controller="Pagos" asp-action="Index" class="btn btn-light btn-sm">Ver más</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- AOS Animations -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            offset: 120,
+            easing: 'ease-in-out',
+            once: true
+        });
+
+        // 🔹 Contador animado (más lento)
+        document.querySelectorAll('.counter').forEach(counter => {
+            let updateCount = () => {
+                let target = parseFloat(counter.textContent.replace(/[^0-9.-]+/g, ""));
+                let count = 0;
+                let duration = 3000;
+                let steps = duration / 30;
+                let step = target / steps;
+                let prefix = counter.dataset.prefix || "";
+
+                let interval = setInterval(() => {
+                    count += step;
+                    if (count >= target) {
+                        count = target;
+                        clearInterval(interval);
+                    }
+                    counter.textContent = prefix + count.toLocaleString(undefined, {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 2
+                    });
+                }, 30);
+            };
+            updateCount();
+        });
+    </script>
+
+    <style>
+        .card-dashboard {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 1rem;
+        }
+
+            .card-dashboard:hover {
+                transform: translateY(-8px) scale(1.03);
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            }
+
+        /* 🎨 Degradados por función */
+        .card-clientes {
+            background: linear-gradient(135deg, #0d6efd, #3b82f6);
+        }
+
+        .card-prestamos {
+            background: linear-gradient(135deg, #198754, #20c997);
+        }
+
+        .card-capital {
+            background: linear-gradient(135deg, #ffc107, #ffb300);
+        }
+
+        .card-pagos {
+            background: linear-gradient(135deg, #0dcaf0, #0d6efd);
+        }
+
+        .card-intereses {
+            background: linear-gradient(135deg, #ff8c00, #ffc107);
+        }
+
+        .card-pendiente {
+            background: linear-gradient(135deg, #dc3545, #e35d6a);
+        }
+
+        .card-pagados {
+            background: linear-gradient(135deg, #28a745, #5dd879);
+        }
+
+        .card-atrasados {
+            background: linear-gradient(135deg, #dc3545, #8b0000);
+        }
+
+        .card-mora {
+            background: linear-gradient(135deg, #fd7e14, #ff4500);
+        }
+
+        .card-abonos {
+            background: linear-gradient(135deg, #0d6efd, #4facfe);
+        }
+    </style>
+}

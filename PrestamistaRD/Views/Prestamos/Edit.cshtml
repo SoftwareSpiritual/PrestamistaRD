@@ -1,0 +1,125 @@
+﻿@model PrestamistaRD.Models.Prestamo
+@{
+    ViewData["Title"] = "Editar Préstamo";
+}
+
+<div class="container mt-4" data-aos="fade-up">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-0 rounded-4" data-aos="zoom-in">
+                <!-- 🔹 Encabezado -->
+                <div class="card-header header-gradient text-white rounded-top-4 d-flex align-items-center justify-content-center" data-aos="fade-down">
+                    <h3 class="mb-0 fw-bold">
+                        <i class="bi bi-pencil-square me-2"></i> Editar Préstamo
+                    </h3>
+                </div>
+
+                <div class="card-body">
+                    <form asp-action="Edit" method="post" data-aos="fade-up" data-aos-delay="200">
+                        <input type="hidden" asp-for="Id" />
+
+                        <!-- Cliente -->
+                        <div class="mb-3" data-aos="fade-right">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-person text-primary"></i> Cliente
+                            </label>
+                            <input type="text" class="form-control" value="@Model.ClienteNombre" readonly />
+                        </div>
+
+                        <!-- Capital -->
+                        <div class="mb-3" data-aos="fade-left" data-aos-delay="100">
+                            <label asp-for="MontoCapital" class="form-label fw-bold">
+                                <i class="bi bi-cash-stack text-success"></i> Monto Capital
+                            </label>
+                            <input asp-for="MontoCapital" class="form-control" placeholder="Ingrese monto capital" />
+                        </div>
+
+                        <!-- Porcentaje -->
+                        <div class="mb-3" data-aos="fade-right" data-aos-delay="200">
+                            <label asp-for="PorcentajeMensual" class="form-label fw-bold">
+                                <i class="bi bi-percent text-warning"></i> Porcentaje Mensual
+                            </label>
+                            <input asp-for="PorcentajeMensual" class="form-control" placeholder="Ej: 5%" />
+                        </div>
+
+                        <!-- Fecha desembolso -->
+                        <div class="mb-3" data-aos="fade-left" data-aos-delay="300">
+                            <label asp-for="FechaDesembolso" class="form-label fw-bold">
+                                <i class="bi bi-calendar-check text-info"></i> Fecha de Desembolso
+                            </label>
+                            <input asp-for="FechaDesembolso" type="date" class="form-control" />
+                        </div>
+
+                        <!-- Día pago -->
+                        <div class="mb-3" data-aos="fade-right" data-aos-delay="400">
+                            <label asp-for="DiaPago" class="form-label fw-bold">
+                                <i class="bi bi-calendar-event text-danger"></i> Fecha de Pago
+                            </label>
+                            <input asp-for="DiaPago" type="date" class="form-control" />
+                        </div>
+
+                        <!-- Mora -->
+                        <div class="mb-3" data-aos="fade-left" data-aos-delay="500">
+                            <label asp-for="MoraFija" class="form-label fw-bold">
+                                <i class="bi bi-exclamation-triangle text-danger"></i> Mora Fija
+                            </label>
+                            <input asp-for="MoraFija" class="form-control" placeholder="Monto fijo de mora" />
+                        </div>
+
+                        <!-- Estado -->
+                        <div class="mb-3" data-aos="fade-right" data-aos-delay="600">
+                            <label asp-for="Estado" class="form-label fw-bold">
+                                <i class="bi bi-clipboard-check text-secondary"></i> Estado
+                            </label>
+                            <select asp-for="Estado" class="form-select">
+                                <option value="Activo" selected="@(Model.Estado == "Activo")">Activo</option>
+                                <option value="Pagado" selected="@(Model.Estado == "Pagado")">Pagado</option>
+                                <option value="Atrasado" selected="@(Model.Estado == "Atrasado")">Atrasado</option>
+                            </select>
+                        </div>
+
+                        <!-- Observación -->
+                        <div class="mb-3" data-aos="fade-left" data-aos-delay="700">
+                            <label asp-for="Observacion" class="form-label fw-bold">
+                                <i class="bi bi-pencil-square text-secondary"></i> Observación
+                            </label>
+                            <textarea asp-for="Observacion" class="form-control" rows="2" placeholder="Notas u observaciones"></textarea>
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="d-flex justify-content-between mt-4" data-aos="zoom-in" data-aos-delay="800">
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left-circle"></i> Volver
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save text-light"></i> Guardar Cambios
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- AOS Animations -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 900,
+            offset: 100,
+            easing: 'ease-in-out',
+            once: true
+        });
+    </script>
+
+    <style>
+        .header-gradient {
+            background: linear-gradient(90deg, #3b82f6 0%, #22c55e 100%);
+            border: 0;
+            padding: 0.9rem 1.25rem;
+        }
+    </style>
+}

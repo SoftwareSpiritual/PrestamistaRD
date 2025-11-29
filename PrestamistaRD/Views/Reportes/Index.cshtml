@@ -1,0 +1,151 @@
+﻿@model PrestamistaRD.Models.DashboardViewModel
+@{
+    ViewData["Title"] = "Reportes";
+}
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-bar-chart-line text-primary"></i> Reportes</h2>
+    </div>
+
+    <!-- 🔹 Filtros -->
+    <form asp-action="Index" method="get" class="card shadow-sm p-3 mb-4">
+        <div class="row g-3 align-items-end">
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Cliente</label>
+                <select name="clienteId" class="form-select">
+                    <option value="">-- Todos --</option>
+                    @foreach (var c in ViewBag.Clientes)
+                    {
+                        <option value="@c.Id">@c.NombreCompleto</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Préstamo</label>
+                <select name="prestamoId" class="form-select">
+                    <option value="">-- Todos --</option>
+                    @foreach (var p in ViewBag.Prestamos)
+                    {
+                        <option value="@p.Id">#@p.Id - @p.ClienteNombre (RD$ @p.MontoCapital.ToString("N2"))</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label fw-bold">Desde</label>
+                <input type="date" name="fechaInicio" class="form-control" />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label fw-bold">Hasta</label>
+                <input type="date" name="fechaFin" class="form-control" />
+            </div>
+            <div class="col-md-2 d-grid">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-funnel"></i> Filtrar
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <!-- 🔹 Tarjetas de Resumen -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card shadow border-0 rounded-4 h-100 text-center">
+                <div class="card-body">
+                    <i class="bi bi-people fs-1 text-primary"></i>
+                    <h6 class="mt-2">Clientes</h6>
+                    <h4 class="fw-bold">@Model.TotalClientes</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow border-0 rounded-4 h-100 text-center">
+                <div class="card-body">
+                    <i class="bi bi-list-check fs-1 text-success"></i>
+                    <h6 class="mt-2">Préstamos Activos</h6>
+                    <h4 class="fw-bold">@Model.TotalPrestamosActivos</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow border-0 rounded-4 h-100 text-center">
+                <div class="card-body">
+                    <i class="bi bi-cash-coin fs-1 text-warning"></i>
+                    <h6 class="mt-2">Capital Prestado</h6>
+                    <h4 class="fw-bold">RD$ @Model.TotalCapitalPrestado.ToString("N2")</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow border-0 rounded-4 h-100 text-center">
+                <div class="card-body">
+                    <i class="bi bi-receipt fs-1 text-info"></i>
+                    <h6 class="mt-2">Pagos Registrados</h6>
+                    <h4 class="fw-bold">RD$ @Model.TotalPagos.ToString("N2")</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🔹 Gráfico -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-body">
+                    <h5 class="card-title text-center mb-4">
+                        <i class="bi bi-pie-chart text-danger"></i> Distribución Financiera
+                    </h5>
+                    <div class="d-flex justify-content-center">
+                        <canvas id="reportChart" style="max-height: 280px; width: 80%;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const ctx = document.getElementById('reportChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Capital Prestado', 'Pagos Registrados', 'Pendiente por Cobrar', 'Intereses'],
+                datasets: [{
+                    data: [
+                        @Model.TotalCapitalPrestado,
+                        @Model.TotalPagos,
+                        @Model.TotalPendiente,
+                        @Model.TotalIntereses
+                    ],
+                    backgroundColor: [
+                        'rgba(13, 110, 253, 0.7)',   // Azul
+                        'rgba(25, 135, 84, 0.7)',   // Verde
+                        'rgba(220, 53, 69, 0.7)',   // Rojo
+                        'rgba(255, 193, 7, 0.7)'    // Amarillo
+                    ],
+                    borderColor: [
+                        'rgba(13, 110, 253, 1)',
+                        'rgba(25, 135, 84, 1)',
+                        'rgba(220, 53, 69, 1)',
+                        'rgba(255, 193, 7, 1)'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: (ctx) => `RD$ ${ctx.raw.toLocaleString()}`
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+}

@@ -1,0 +1,70 @@
+2025-11-04T16:45:35.940767Z 0 [System] [MY-015015] [Server] MySQL Server - start.
+2025-11-04T16:45:36.142962Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2025-11-04T16:45:36.143394Z 0 [System] [MY-010116] [Server] C:\Users\gilbert.mateo\Documents\PrestamistaRD\MySQL\bin\mysqld.exe (mysqld 9.5.0) starting as process 2700
+2025-11-04T16:45:36.143410Z 0 [System] [MY-015590] [Server] MySQL Server has access to 12 logical CPUs.
+2025-11-04T16:45:36.143421Z 0 [System] [MY-015590] [Server] MySQL Server has access to 16794443776 bytes of physical memory.
+2025-11-04T16:45:36.166283Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2025-11-04T16:45:37.014065Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2025-11-04T16:45:38.055022Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2025-11-04T16:45:38.055342Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2025-11-04T16:45:38.059199Z 0 [ERROR] [MY-010262] [Server] Can't start server: Bind on TCP/IP port: An attempt was made to access a socket in a way forbidden by its access permissions. 
+2025-11-04T16:45:38.059764Z 0 [ERROR] [MY-010257] [Server] Do you already have another mysqld server running on port: 3306 ?
+2025-11-04T16:45:38.060167Z 0 [ERROR] [MY-010119] [Server] Aborting
+2025-11-04T16:45:39.465515Z 0 [System] [MY-010910] [Server] C:\Users\gilbert.mateo\Documents\PrestamistaRD\MySQL\bin\mysqld.exe: Shutdown complete (mysqld 9.5.0)  MySQL Community Server - GPL.
+2025-11-04T16:45:39.466735Z 0 [System] [MY-015016] [Server] MySQL Server - end.
+2025-11-04T16:47:31.450460Z 0 [System] [MY-015015] [Server] MySQL Server - start.
+2025-11-04T16:47:31.627941Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2025-11-04T16:47:31.628210Z 0 [System] [MY-010116] [Server] C:\Users\gilbert.mateo\Documents\PrestamistaRD\MySQL\bin\mysqld.exe (mysqld 9.5.0) starting as process 23864
+2025-11-04T16:47:31.628220Z 0 [System] [MY-015590] [Server] MySQL Server has access to 12 logical CPUs.
+2025-11-04T16:47:31.628227Z 0 [System] [MY-015590] [Server] MySQL Server has access to 16794443776 bytes of physical memory.
+2025-11-04T16:47:31.644096Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2025-11-04T16:47:32.596921Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2025-11-04T16:47:33.283556Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2025-11-04T16:47:33.283898Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2025-11-04T16:47:33.288236Z 0 [ERROR] [MY-010262] [Server] Can't start server: Bind on TCP/IP port: An attempt was made to access a socket in a way forbidden by its access permissions. 
+2025-11-04T16:47:33.288888Z 0 [ERROR] [MY-010257] [Server] Do you already have another mysqld server running on port: 3306 ?
+2025-11-04T16:47:33.289338Z 0 [ERROR] [MY-010119] [Server] Aborting
+2025-11-04T16:47:34.809175Z 0 [System] [MY-010910] [Server] C:\Users\gilbert.mateo\Documents\PrestamistaRD\MySQL\bin\mysqld.exe: Shutdown complete (mysqld 9.5.0)  MySQL Community Server - GPL.
+2025-11-04T16:47:34.810602Z 0 [System] [MY-015016] [Server] MySQL Server - end.
+2025-11-04T17:00:52.613278Z 0 [System] [MY-015015] [Server] MySQL Server - start.
+2025-11-04T17:00:52.824708Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2025-11-04T17:00:52.824976Z 0 [System] [MY-010116] [Server] C:\Users\gilbert.mateo\Documents\PrestamistaRD\MySQL\bin\mysqld.exe (mysqld 9.5.0) starting as process 1472
+2025-11-04T17:00:52.824985Z 0 [System] [MY-015590] [Server] MySQL Server has access to 12 logical CPUs.
+2025-11-04T17:00:52.824991Z 0 [System] [MY-015590] [Server] MySQL Server has access to 16794443776 bytes of physical memory.
+2025-11-04T17:00:52.841261Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2025-11-04T17:00:54.553605Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2025-11-04T17:00:57.167959Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2025-11-04T17:00:57.168557Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2025-11-04T17:00:57.179256Z 0 [ERROR] [MY-010262] [Server] Can't start server: Bind on TCP/IP port: An attempt was made to access a socket in a way forbidden by its access permissions. 
+2025-11-04T17:00:57.187470Z 0 [ERROR] [MY-010257] [Server] Do you already have another mysqld server running on port: 3306 ?
+2025-11-04T17:00:57.188200Z 0 [ERROR] [MY-010119] [Server] Aborting
+2025-11-04T17:00:59.015335Z 0 [System] [MY-010910] [Server] C:\Users\gilbert.mateo\Documents\PrestamistaRD\MySQL\bin\mysqld.exe: Shutdown complete (mysqld 9.5.0)  MySQL Community Server - GPL.
+2025-11-04T17:00:59.017044Z 0 [System] [MY-015016] [Server] MySQL Server - end.
+2025-11-04T17:05:11.368210Z 0 [System] [MY-015015] [Server] MySQL Server - start.
+2025-11-04T17:05:11.594600Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2025-11-04T17:05:11.594853Z 0 [System] [MY-010116] [Server] C:\Users\gilbert.mateo\Documents\PrestamistaRD\MySQL\bin\mysqld.exe (mysqld 9.5.0) starting as process 29372
+2025-11-04T17:05:11.594862Z 0 [System] [MY-015590] [Server] MySQL Server has access to 12 logical CPUs.
+2025-11-04T17:05:11.594869Z 0 [System] [MY-015590] [Server] MySQL Server has access to 16794443776 bytes of physical memory.
+2025-11-04T17:05:11.619931Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2025-11-04T17:05:13.361932Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2025-11-04T17:05:14.640498Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2025-11-04T17:05:14.640853Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2025-11-04T17:05:14.651673Z 0 [ERROR] [MY-010262] [Server] Can't start server: Bind on TCP/IP port: Intento de acceso a un socket no permitido por sus permisos de acceso. 
+2025-11-04T17:05:14.652854Z 0 [ERROR] [MY-010257] [Server] Do you already have another mysqld server running on port: 3306 ?
+2025-11-04T17:05:14.653254Z 0 [ERROR] [MY-010119] [Server] Aborting
+2025-11-04T17:05:16.471778Z 0 [System] [MY-010910] [Server] C:\Users\gilbert.mateo\Documents\PrestamistaRD\MySQL\bin\mysqld.exe: Shutdown complete (mysqld 9.5.0)  MySQL Community Server - GPL.
+2025-11-04T17:05:16.473132Z 0 [System] [MY-015016] [Server] MySQL Server - end.
+2025-11-04T17:07:58.418494Z 0 [System] [MY-015015] [Server] MySQL Server - start.
+2025-11-04T17:07:58.646376Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2025-11-04T17:07:58.646692Z 0 [System] [MY-010116] [Server] C:\Users\gilbert.mateo\Documents\PrestamistaRD\MySQL\bin\mysqld.exe (mysqld 9.5.0) starting as process 5932
+2025-11-04T17:07:58.646703Z 0 [System] [MY-015590] [Server] MySQL Server has access to 12 logical CPUs.
+2025-11-04T17:07:58.646711Z 0 [System] [MY-015590] [Server] MySQL Server has access to 16794443776 bytes of physical memory.
+2025-11-04T17:07:58.675861Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2025-11-04T17:08:00.485681Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2025-11-04T17:08:02.251005Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2025-11-04T17:08:02.251702Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2025-11-04T17:08:02.270396Z 0 [ERROR] [MY-010262] [Server] Can't start server: Bind on TCP/IP port: Intento de acceso a un socket no permitido por sus permisos de acceso. 
+2025-11-04T17:08:02.272201Z 0 [ERROR] [MY-010257] [Server] Do you already have another mysqld server running on port: 3306 ?
+2025-11-04T17:08:02.273149Z 0 [ERROR] [MY-010119] [Server] Aborting
+2025-11-04T17:08:04.689289Z 0 [System] [MY-010910] [Server] C:\Users\gilbert.mateo\Documents\PrestamistaRD\MySQL\bin\mysqld.exe: Shutdown complete (mysqld 9.5.0)  MySQL Community Server - GPL.
+2025-11-04T17:08:04.691207Z 0 [System] [MY-015016] [Server] MySQL Server - end.

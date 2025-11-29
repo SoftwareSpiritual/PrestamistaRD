@@ -1,0 +1,137 @@
+﻿@model PrestamistaRD.Models.Pago
+@{
+    ViewData["Title"] = "Detalle del Pago";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-primary text-white text-center rounded-top-4">
+                    <h4 class="mb-0">
+                        <i class="bi bi-receipt-cutoff me-2"></i> Detalle del Pago
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <dl class="row mb-0">
+                        <!-- Cliente -->
+                        <dt class="col-sm-4 text-muted">
+                            <i class="bi bi-person-circle text-primary"></i> Cliente
+                        </dt>
+                        <dd class="col-sm-8 fw-semibold">@ViewBag.Cliente</dd>
+
+                        <!-- Préstamo -->
+                        <dt class="col-sm-4 text-muted">
+                            <i class="bi bi-hash text-primary"></i> Préstamo ID
+                        </dt>
+                        <dd class="col-sm-8 fw-semibold">@Model.PrestamoId</dd>
+
+                        <!-- Capital Original -->
+                        <dt class="col-sm-4 text-muted">
+                            <i class="bi bi-cash text-secondary"></i> Capital Original
+                        </dt>
+                        <dd class="col-sm-8 text-secondary fw-semibold">
+                            RD$ @(((decimal)ViewBag.CapitalOriginal).ToString("N2"))
+                        </dd>
+
+                        <!-- Fecha de Pago -->
+                        <dt class="col-sm-4 text-muted">
+                            <i class="bi bi-calendar-date text-info"></i> Fecha de Pago
+                        </dt>
+                        <dd class="col-sm-8">@Model.FechaPago.ToString("dd/MM/yyyy")</dd>
+
+                        <!-- Tipo de Pago -->
+                        <dt class="col-sm-4 text-muted">
+                            <i class="bi bi-wallet2 text-success"></i> Tipo de Pago
+                        </dt>
+                        <dd class="col-sm-8">
+                            @if (Model.TipoPago == "Interes")
+                            {
+                                <span class="badge bg-primary"><i class="bi bi-percent"></i> Solo Interés</span>
+                            }
+                            else if (Model.TipoPago == "InteresAbono")
+                            {
+                                <span class="badge bg-info"><i class="bi bi-plus-circle"></i> Interés + Abono a Capital</span>
+                            }
+                            else if (Model.TipoPago == "Total")
+                            {
+                                <span class="badge bg-success"><i class="bi bi-check2-circle"></i> Pago Total</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">@Model.TipoPago</span>
+                            }
+                        </dd>
+
+                        <!-- Frecuencia -->
+                        <dt class="col-sm-4 text-muted">
+                            <i class="bi bi-repeat text-info"></i> Frecuencia
+                        </dt>
+                        <dd class="col-sm-8">@Model.Frecuencia</dd>
+
+                        <!-- Periodo -->
+                        <dt class="col-sm-4 text-muted">
+                            <i class="bi bi-clock-history text-warning"></i> Periodo
+                        </dt>
+                        <dd class="col-sm-8">@Model.Periodo</dd>
+
+                        <!-- % Interés -->
+                        <dt class="col-sm-4 text-muted">
+                            <i class="bi bi-percent text-dark"></i> % Interés
+                        </dt>
+                        <dd class="col-sm-8 fw-semibold">
+                            @(((decimal)ViewBag.InteresMensual).ToString("N2")) %
+                        </dd>
+
+                        <!-- Monto Interés -->
+                        <dt class="col-sm-4 text-muted">
+                            <i class="bi bi-graph-up text-primary"></i> Monto Interés
+                        </dt>
+                        <dd class="col-sm-8 text-primary fw-semibold">
+                            RD$ @Model.MontoInteres.ToString("N2")
+                        </dd>
+
+                        <!-- Monto Mora -->
+                        <dt class="col-sm-4 text-muted">
+                            <i class="bi bi-exclamation-octagon text-danger"></i> Monto Mora
+                        </dt>
+                        <dd class="col-sm-8 text-danger fw-semibold">
+                            RD$ @Model.MontoMora.ToString("N2")
+                        </dd>
+
+                        <!-- Monto Capital -->
+                        <dt class="col-sm-4 text-muted">
+                            <i class="bi bi-cash-coin text-warning"></i> Monto Capital
+                        </dt>
+                        <dd class="col-sm-8 text-warning fw-semibold">
+                            RD$ @Model.MontoCapital.ToString("N2")
+                        </dd>
+
+                        <!-- Total Pagado -->
+                        <dt class="col-sm-4 fw-bold text-dark">
+                            <i class="bi bi-cash-stack text-success"></i> Total Pagado
+                        </dt>
+                        <dd class="col-sm-8 fw-bold text-success fs-5">
+                            RD$ @Model.TotalPagado.ToString("N2")
+                        </dd>
+
+                        <!-- Observación -->
+                        <dt class="col-sm-4 text-muted">
+                            <i class="bi bi-chat-left-text text-secondary"></i> Observación
+                        </dt>
+                        <dd class="col-sm-8">@Model.Observacion</dd>
+                    </dl>
+                </div>
+
+                <div class="card-footer bg-light d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-outline-secondary rounded-pill">
+                        <i class="bi bi-arrow-left-circle"></i> Volver
+                    </a>
+                    <a asp-action="GenerarReciboPdf" asp-route-id="@Model.Id" class="btn btn-danger rounded-pill">
+                        <i class="bi bi-file-earmark-pdf-fill"></i> Generar Recibo PDF
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

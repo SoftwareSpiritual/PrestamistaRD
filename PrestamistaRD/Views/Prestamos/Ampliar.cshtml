@@ -1,0 +1,88 @@
+﻿@model PrestamistaRD.Models.ViewModels.AmpliacionViewModel
+@{
+    ViewData["Title"] = "Reenganchar Préstamo";
+}
+
+<div class="container mt-4" data-aos="fade-up">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 rounded-4" data-aos="zoom-in">
+                <!-- Encabezado -->
+                <div class="card-header text-white text-center rounded-top-4"
+                     style="background: linear-gradient(135deg, #ffc107, #fd7e14);">
+                    <h3 class="mb-0 fw-bold">
+                        <i class="bi bi-plus-circle"></i> Reenganchar Préstamo
+                    </h3>
+                </div>
+
+                <!-- Cuerpo -->
+                <div class="card-body p-4">
+                    <form asp-action="Ampliar" method="post">
+                        <input type="hidden" asp-for="PrestamoId" />
+
+                        <!-- Cliente -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-person"></i> Cliente
+                            </label>
+                            <input type="text" class="form-control" value="@Model.ClienteNombre" readonly />
+                        </div>
+
+                        <!-- Saldo Actual -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-cash-stack"></i> Saldo Actual
+                            </label>
+                            <input type="text" class="form-control" value="RD$ @Model.SaldoActual.ToString("N2")" readonly />
+                        </div>
+
+                        <!-- Monto Ampliado -->
+                        <div class="mb-3" data-aos="fade-right">
+                            <label asp-for="MontoAmpliado" class="form-label fw-bold">
+                                <i class="bi bi-cash-coin text-success"></i> Monto a Ampliar
+                            </label>
+                            <input asp-for="MontoAmpliado" class="form-control" type="number" step="0.01" min="0" placeholder="Ingrese el monto a reenganchar" required />
+                            <span asp-validation-for="MontoAmpliado" class="text-danger"></span>
+                        </div>
+
+                        <!-- Observación -->
+                        <div class="mb-3" data-aos="fade-left" data-aos-delay="100">
+                            <label asp-for="Observacion" class="form-label fw-bold">
+                                <i class="bi bi-chat-left-text text-secondary"></i> Observación
+                            </label>
+                            <textarea asp-for="Observacion" class="form-control" rows="3" placeholder="Opcional: nota sobre la ampliación"></textarea>
+                            <span asp-validation-for="Observacion" class="text-danger"></span>
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="Index" class="btn btn-outline-secondary shadow-sm">
+                                <i class="bi bi-arrow-left-circle"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-warning shadow-sm">
+                                <i class="bi bi-save"></i> Guardar Ampliación
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- AOS Animations -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 900,
+            offset: 100,
+            easing: 'ease-in-out',
+            once: true
+        });
+    </script>
+}

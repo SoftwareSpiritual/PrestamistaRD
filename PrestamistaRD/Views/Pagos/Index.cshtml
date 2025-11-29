@@ -1,0 +1,266 @@
+﻿@model List<PrestamistaRD.Models.ViewModels.PagosIndexViewModel>
+@{
+    ViewData["Title"] = "Pagos por Cliente";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4 fw-bold text-center" data-aos="fade-down">
+        <i class="bi bi-cash-coin"></i> Pagos por Cliente
+    </h2>
+
+    <div class="mb-3 text-end" data-aos="fade-left">
+        <a asp-controller="Pagos" asp-action="Create"
+           class="btn btn-success shadow-sm rounded-pill px-4">
+            <i class="bi bi-plus-circle"></i> Hacer Pago
+        </a>
+    </div>
+
+    <div class="row g-4 align-items-start">
+        @foreach (var prestamo in Model)
+        {
+            var accordionId = $"accordion-{prestamo.PrestamoId}";
+            var headingId = $"heading-{prestamo.PrestamoId}";
+            var collapseId = $"collapse-{prestamo.PrestamoId}";
+
+            <div class="col-md-6" data-aos="zoom-in-up" data-aos-delay="150">
+                <div class="card shadow-lg border-0 rounded-4">
+
+                    <!-- Encabezado de tarjeta -->
+                    <div class="card-header bg-gradient text-white d-flex justify-content-between rounded-top-4"
+                         style="background: linear-gradient(90deg, #0d6efd, #0dcaf0);">
+                        <span class="fw-bold">
+                            <i class="bi bi-person-fill"></i> @prestamo.ClienteNombre
+                        </span>
+                        <span class="fw-bold">RD$ @prestamo.MontoOriginal.ToString("N2")</span>
+                    </div>
+
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold text-primary mb-3" data-aos="fade-right">
+                            <i class="bi bi-person-badge"></i> @prestamo.ClienteNombre
+                        </h5>
+
+                        <!-- Acordeón -->
+                        <div class="accordion" id="@accordionId">
+                            <div class="accordion-item border-0">
+                                <h2 class="accordion-header" id="@headingId">
+                                    <button class="accordion-button collapsed fw-semibold" type="button"
+                                            data-bs-toggle="collapse"
+                                            data-bs-target="#@collapseId"
+                                            aria-expanded="false"
+                                            aria-controls="@collapseId">
+                                        <i class="bi bi-info-circle me-2"></i> Ver Detalles
+                                    </button>
+                                </h2>
+                                <div id="@collapseId" class="accordion-collapse collapse"
+                                     aria-labelledby="@headingId" data-bs-parent="#@accordionId">
+                                    <div class="accordion-body">
+
+                                        @if (prestamo.EsPlazoDefinido)
+                                        {
+                                            <!-- Cuotas originales -->
+                                            if (prestamo.CuotasOriginales != null && prestamo.CuotasOriginales.Any())
+                                            {
+                                                <h6 class="fw-bold text-primary mb-3" data-aos="fade-right">
+                                                    <i class="bi bi-calendar-check"></i> Cuotas Originales
+                                                </h6>
+                                                <div class="table-responsive mb-4">
+                                                    <table class="table table-hover align-middle shadow-sm rounded">
+                                                        <thead class="table-light">
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>Vencimiento</th>
+                                                                <th>Monto Total</th>
+                                                                <th>Estado</th>
+                                                                <th>Acción</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <!-- Primero las pagadas -->
+                                                            @foreach (var c in prestamo.CuotasOriginales.Where(x => x.Estado == "Pagada"))
+                                                            {
+                                                                <tr data-aos="fade-up" data-aos-delay="200">
+                                                                    <td>@c.NumeroCuota</td>
+                                                                    <td>@c.FechaVencimiento.ToString("dd/MM/yyyy")</td>
+                                                                    <td class="fw-bold text-success">RD$ @c.MontoTotal.ToString("N2")</td>
+                                                                    <td><span class="badge bg-success">Pagada</span></td>
+                                                                    <td>
+                                                                        <!-- 🔹 Botón Recibo -->
+                                                                        <a asp-controller="Prestamos" asp-action="Recibo" asp-route-id="@c.PagoId"
+                                                                           class="btn btn-sm btn-info rounded-pill px-3" target="_blank">
+                                                                            <i class="bi bi-receipt"></i> Recibo
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                            }
+
+                                                            <!-- Luego las demás -->
+                                                            @foreach (var c in prestamo.CuotasOriginales.Where(x => x.Estado != "Pagada"))
+                                                            {
+                                                                <tr data-aos="fade-up" data-aos-delay="200">
+                                                                    <td>@c.NumeroCuota</td>
+                                                                    <td>@c.FechaVencimiento.ToString("dd/MM/yyyy")</td>
+                                                                    <td class="fw-bold text-success">RD$ @c.MontoTotal.ToString("N2")</td>
+                                                                    <td>
+                                                                        @if (c.Estado == "Vencida")
+                                                                        {
+                                                                            <span class="badge bg-danger">Vencida</span>
+                                                                        }
+                                                                        else if (c.Estado == "Cancelada")
+                                                                        {
+                                                                            <span class="badge bg-secondary">Cancelada</span>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <span class="badge bg-warning text-dark">Pendiente</span>
+                                                                        }
+                                                                    </td>
+                                                                    <td>
+                                                                        @if (c.Estado == "Pendiente")
+                                                                        {
+                                                                            <a asp-controller="Pagos" asp-action="PagarCuota" asp-route-cuotaId="@c.Id"
+                                                                               class="btn btn-sm btn-success rounded-pill px-3">
+                                                                                <i class="bi bi-cash"></i> Pagar
+                                                                            </a>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <button class="btn btn-sm btn-secondary rounded-pill px-3" disabled>
+                                                                                <i class="bi bi-check-circle"></i> @c.Estado
+                                                                            </button>
+                                                                        }
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            }
+
+                                            <!-- Cuotas por reenganche -->
+                                            @if (prestamo.CuotasReenganche != null && prestamo.CuotasReenganche.Any())
+                                            {
+                                                <h6 class="fw-bold text-warning mb-3" data-aos="fade-left">
+                                                    <i class="bi bi-arrow-repeat"></i> Cuotas por Reenganche
+                                                </h6>
+                                                <div class="table-responsive mb-4">
+                                                    <table class="table table-hover align-middle shadow-sm rounded">
+                                                        <thead class="table-light">
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>Vencimiento</th>
+                                                                <th>Monto Total</th>
+                                                                <th>Estado</th>
+                                                                <th>Acción</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (var c in prestamo.CuotasReenganche)
+                                                            {
+                                                                <tr data-aos="fade-up" data-aos-delay="200">
+                                                                    <td>@c.NumeroCuota</td>
+                                                                    <td>@c.FechaVencimiento.ToString("dd/MM/yyyy")</td>
+                                                                    <td class="fw-bold text-success">RD$ @c.MontoTotal.ToString("N2")</td>
+                                                                    <td>
+                                                                        @if (c.Estado == "Pagada")
+                                                                        {
+                                                                            <span class="badge bg-success">Pagada</span>
+                                                                        }
+                                                                        else if (c.Estado == "Vencida")
+                                                                        {
+                                                                            <span class="badge bg-danger">Vencida</span>
+                                                                        }
+                                                                        else if (c.Estado == "Cancelada")
+                                                                        {
+                                                                            <span class="badge bg-secondary">Cancelada</span>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <span class="badge bg-warning text-dark">Pendiente</span>
+                                                                        }
+                                                                    </td>
+                                                                    <td>
+                                                                        @if (c.Estado == "Pendiente")
+                                                                        {
+                                                                            <a asp-controller="Pagos" asp-action="PagarCuota" asp-route-cuotaId="@c.Id"
+                                                                               class="btn btn-sm btn-success rounded-pill px-3">
+                                                                                <i class="bi bi-cash"></i> Pagar
+                                                                            </a>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <!-- 🔹 Botón Recibo -->
+                                                                            <a asp-controller="Prestamos" asp-action="Recibo" asp-route-id="@c.PagoId"
+                                                                               class="btn btn-sm btn-info rounded-pill px-3" target="_blank">
+                                                                                <i class="bi bi-receipt"></i> Recibo
+                                                                            </a>
+
+                                                                        }
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            <!-- Pagos normales -->
+                                            <h6 class="fw-bold text-primary mb-3" data-aos="fade-left">
+                                                <i class="bi bi-receipt"></i> Pagos Realizados
+                                            </h6>
+                                            <div class="table-responsive">
+                                                <table class="table table-hover align-middle shadow-sm rounded">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th>Fecha</th>
+                                                            <th>Tipo</th>
+                                                            <th>Total</th>
+                                                            <th>Acción</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var p in prestamo.Pagos!)
+                                                        {
+                                                            <tr data-aos="fade-up" data-aos-delay="200">
+                                                                <td>@p.FechaPago.ToString("dd/MM/yyyy")</td>
+                                                                <td>@p.TipoPago</td>
+                                                                <td class="fw-bold text-success">RD$ @p.TotalPagado.ToString("N2")</td>
+                                                                <td>
+                                                                    <!-- 🔹 Botón Recibo -->
+                                                                    <a asp-controller="Prestamos" asp-action="ReciboNormal" asp-route-id="@p.Id"
+                                                                       class="btn btn-sm btn-info rounded-pill px-3" target="_blank">
+                                                                        <i class="bi bi-receipt"></i> Recibo
+                                                                    </a>
+
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /acordeón -->
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>
+    AOS.init({
+        duration: 900,
+        offset: 100,
+        easing: 'ease-in-out',
+        once: true
+    });
+</script>

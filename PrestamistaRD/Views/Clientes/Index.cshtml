@@ -1,0 +1,126 @@
+﻿@model IEnumerable<PrestamistaRD.Models.Cliente>
+@{
+    ViewData["Title"] = "Clientes";
+}
+
+<div class="container mt-4" data-aos="fade-up">
+    <!-- Encabezado con botón -->
+    <div class="d-flex justify-content-between align-items-center mb-4" data-aos="fade-down">
+        <h3 class="fw-bold">
+            <i class="bi bi-people text-primary"></i> Clientes
+        </h3>
+        <a asp-action="Create" class="btn btn-success shadow-sm" data-aos="fade-left" data-aos-delay="200">
+            <i class="bi bi-plus-circle"></i> Nuevo Cliente
+        </a>
+    </div>
+
+    <!-- Tabla de clientes -->
+    <div class="card shadow border-0 rounded-4" data-aos="zoom-in">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle w-100">
+                    <thead class="table-light">
+                        <tr class="text-center">
+                            <th class="text-start"><i class="bi bi-person-vcard"></i> Nombre</th>
+                            <th><i class="bi bi-credit-card-2-front text-success"></i> Cédula</th>
+                            <th><i class="bi bi-telephone text-warning"></i> Teléfono</th>
+                            <th><i class="bi bi-geo-alt text-danger"></i> Dirección</th>
+                            <th><i class="bi bi-flag"></i> Estado</th>
+                            <th><i class="bi bi-gear"></i> Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Any())
+                        {
+                            var delay = 100;
+                            @foreach (var item in Model)
+                            {
+                                <tr data-aos="fade-up" data-aos-delay="@delay">
+                                    <td class="text-start">@item.NombreCompleto</td>
+                                    <td class="text-center">@item.Cedula</td>
+                                    <td class="text-center">@item.Telefono</td>
+                                    <td class="text-center">@item.Direccion</td>
+                                    <td class="text-center">
+                                        @if (item.Estado)
+                                        {
+                                            <span class="badge bg-success">
+                                                <i class="bi bi-check-circle"></i> Activo
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">
+                                                <i class="bi bi-x-circle"></i> Inactivo
+                                            </span>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="btn-group" data-aos="zoom-in" data-aos-delay="200">
+                                            <a asp-action="Details" asp-route-id="@item.Id"
+                                               class="btn btn-sm btn-outline-info" title="Detalles">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                            <a asp-action="Edit" asp-route-id="@item.Id"
+                                               class="btn btn-sm btn-outline-warning" title="Editar">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <a href="javascript:void(0)"
+                                               class="btn btn-sm btn-outline-danger" title="Eliminar"
+                                               onclick="confirmarEliminar('@Url.Action("Delete", "Clientes", new { id = item.Id })')">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                delay += 100;
+                            }
+                        }
+                        else
+                        {
+                            <tr data-aos="zoom-in">
+                                <td colspan="6" class="text-center text-muted">
+                                    <i class="bi bi-inbox"></i> No hay clientes registrados
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function confirmarEliminar(url) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "Esta acción eliminará al cliente permanentemente.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: '<i class="bi bi-trash"></i> Sí, eliminar',
+                cancelButtonText: 'Cancelar',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = url;
+                }
+            });
+        }
+    </script>
+
+    <!-- 🔹 AOS Animations -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 900,
+            offset: 100,
+            easing: 'ease-in-out',
+            once: true
+        });
+    </script>
+}

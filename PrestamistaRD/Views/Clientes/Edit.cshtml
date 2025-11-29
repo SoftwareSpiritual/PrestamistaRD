@@ -1,0 +1,115 @@
+﻿@model PrestamistaRD.Models.Cliente
+@{
+    ViewData["Title"] = "Editar Cliente";
+}
+
+<div class="container mt-4" data-aos="fade-up">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-0 rounded-4" data-aos="zoom-in">
+                <div class="card-body">
+                    <h3 class="text-center mb-4" data-aos="fade-down">
+                        <i class="bi bi-pencil text-warning"></i> Editar Cliente
+                    </h3>
+
+                    <form asp-action="Edit" method="post" id="clienteForm">
+                        <input type="hidden" asp-for="Id" />
+
+                        <div class="mb-3" data-aos="fade-right">
+                            <label class="form-label fw-bold">Nombre Completo</label>
+                            <input asp-for="NombreCompleto" class="form-control" required />
+                        </div>
+
+                        <div class="mb-3" data-aos="fade-left">
+                            <label class="form-label fw-bold">Cédula</label>
+                            <input asp-for="Cedula" class="form-control" id="Cedula" maxlength="13" required />
+                        </div>
+
+                        <div class="mb-3" data-aos="fade-right">
+                            <label class="form-label fw-bold">Teléfono</label>
+                            <input asp-for="Telefono" class="form-control" id="Telefono" maxlength="12" required />
+                        </div>
+
+                        <div class="mb-3" data-aos="fade-left">
+                            <label class="form-label fw-bold">Dirección</label>
+                            <textarea asp-for="Direccion" class="form-control"></textarea>
+                        </div>
+
+                        <div class="mb-3" data-aos="fade-right">
+                            <label class="form-label fw-bold">Estado</label>
+                            <select asp-for="Estado" class="form-select">
+                                <option value="true" selected="@Model.Estado">Activo</option>
+                                <option value="false" selected="@(Model.Estado == false)">Inactivo</option>
+                            </select>
+                        </div>
+
+                        <div class="d-flex justify-content-between" data-aos="fade-up">
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left-circle"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save"></i> Guardar Cambios
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function maskCedula(input) {
+            let value = input.value.replace(/\D/g, "");
+            if (value.length > 3 && value.length <= 10)
+                value = value.replace(/(\d{3})(\d+)/, "$1-$2");
+            else if (value.length > 10)
+                value = value.replace(/(\d{3})(\d{7})(\d+)/, "$1-$2-$3");
+            input.value = value;
+        }
+
+        function maskTelefono(input) {
+            let value = input.value.replace(/\D/g, "");
+            if (value.length > 3 && value.length <= 6)
+                value = value.replace(/(\d{3})(\d+)/, "$1-$2");
+            else if (value.length > 6)
+                value = value.replace(/(\d{3})(\d{3})(\d+)/, "$1-$2-$3");
+            input.value = value;
+        }
+
+        document.getElementById("Cedula").addEventListener("input", function () {
+            maskCedula(this);
+        });
+        document.getElementById("Telefono").addEventListener("input", function () {
+            maskTelefono(this);
+        });
+
+        // 🔹 Validación antes de enviar
+        document.getElementById("clienteForm").addEventListener("submit", function (e) {
+            const cedula = document.getElementById("Cedula").value.replace(/\D/g, "");
+            const telefono = document.getElementById("Telefono").value.replace(/\D/g, "");
+
+            if (cedula.length !== 11) {
+                alert("La cédula debe tener 11 dígitos.");
+                e.preventDefault();
+            }
+            if (telefono.length !== 10) {
+                alert("El teléfono debe tener 10 dígitos.");
+                e.preventDefault();
+            }
+        });
+    </script>
+
+    <!-- 🔹 AOS Animations -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 900,
+            offset: 100,
+            easing: 'ease-in-out',
+            once: true
+        });
+    </script>
+}

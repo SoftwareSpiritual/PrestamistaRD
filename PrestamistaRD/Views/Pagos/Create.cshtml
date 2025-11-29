@@ -1,0 +1,251 @@
+﻿@model PrestamistaRD.Models.Pago
+@{
+    ViewData["Title"] = "Registrar Pago";
+}
+
+<div class="container mt-4" data-aos="fade-up">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-0 rounded-4" data-aos="zoom-in">
+                <!-- 🔹 Encabezado con degradado -->
+                <div class="card-header header-gradient text-white rounded-top-4 d-flex align-items-center justify-content-center" data-aos="fade-down">
+                    <h3 class="mb-0 fw-bold">
+                        <i class="bi bi-cash-coin me-2"></i> Registrar Pago
+                    </h3>
+                </div>
+
+                <div class="card-body">
+                    <form asp-action="Create" method="post" id="formPago" data-aos="fade-up" data-aos-delay="200">
+                        <!-- Préstamo -->
+                        <div class="mb-3" data-aos="fade-right">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-list-ul"></i> Préstamo
+                            </label>
+                            @if (Model?.PrestamoId > 0)
+                            {
+                                <select class="form-select" disabled id="PrestamoId">
+                                    @foreach (var p in ViewBag.Prestamos)
+                                    {
+                                        <option value="@p.Id"
+                                                selected="@(Model?.PrestamoId == p.Id)"
+                                                data-capital="@p.MontoCapital"
+                                                data-original="@p.MontoOriginal"
+                                                data-interes="@p.PorcentajeMensual"
+                                                data-fecha="@p.DiaPago.ToString("yyyy-MM-dd")">
+                                            @p.ClienteNombre - RD$ @p.MontoCapital.ToString("N2")
+                                        </option>
+                                    }
+                                </select>
+                                <input type="hidden" asp-for="PrestamoId" />
+                            }
+                            else
+                            {
+                                <select asp-for="PrestamoId" class="form-select" id="PrestamoId" required>
+                                    <option value="">-- Seleccionar --</option>
+                                    @foreach (var p in ViewBag.Prestamos)
+                                    {
+                                        <option value="@p.Id"
+                                                selected="@(Model?.PrestamoId == p.Id ? "selected" : null)"
+                                                data-capital="@p.MontoCapital"
+                                                data-original="@p.MontoOriginal"
+                                                data-interes="@p.PorcentajeMensual"
+                                                data-fecha="@p.DiaPago.ToString("yyyy-MM-dd")">
+                                            @p.ClienteNombre - RD$ @p.MontoCapital.ToString("N2")
+                                        </option>
+                                    }
+                                </select>
+                            }
+                        </div>
+
+                        <!-- Fecha de pago -->
+                        <div class="mb-3" data-aos="fade-left" data-aos-delay="100">
+                            <label asp-for="FechaPago" class="form-label fw-bold">
+                                <i class="bi bi-calendar-date"></i> Fecha de Pago
+                            </label>
+                            <input asp-for="FechaPago" type="date" class="form-control" id="FechaPago" readonly />
+                        </div>
+
+                        <!-- Tipo de Pago -->
+                        <div class="mb-3" data-aos="fade-right" data-aos-delay="200">
+                            <label asp-for="TipoPago" class="form-label fw-bold">
+                                <i class="bi bi-ui-checks"></i> Tipo de Pago
+                            </label>
+                            <select asp-for="TipoPago" class="form-select">
+                                <option value="Interes" selected="@("Interes" == Model?.TipoPago)">Solo Interés</option>
+                                <option value="InteresAbono" selected="@("InteresAbono" == Model?.TipoPago)">Interés + Abono a Capital</option>
+                                <option value="Total" selected="@("Total" == Model?.TipoPago)">Pago Total</option>
+                            </select>
+                        </div>
+
+                        <!-- Frecuencia -->
+                        <div class="mb-3" data-aos="fade-left" data-aos-delay="300">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-repeat text-info"></i> Frecuencia
+                            </label>
+                            <select asp-for="Frecuencia" class="form-select" id="Frecuencia">
+                                <option value="Mensual" selected="@("Mensual" == Model?.Frecuencia)">Mensual</option>
+                                <option value="Quincenal" selected="@("Quincenal" == Model?.Frecuencia)">Quincenal</option>
+                            </select>
+                        </div>
+
+                        <!-- Periodo -->
+                        <div class="mb-3" data-aos="fade-right" data-aos-delay="400">
+                            <label asp-for="Periodo" class="form-label fw-bold">
+                                <i class="bi bi-clock-history"></i> Periodo
+                            </label>
+                            <input asp-for="Periodo" class="form-control" placeholder="Ej: 2025-09" />
+                        </div>
+
+                        <!-- % Interés y Monto Interés -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3" data-aos="fade-left">
+                                <label class="form-label fw-bold">
+                                    <i class="bi bi-percent text-warning"></i> % Interés
+                                </label>
+                                <input id="PorcentajeInteres" class="form-control" value="0 %" readonly />
+                            </div>
+                            <div class="col-md-6 mb-3" data-aos="fade-right" data-aos-delay="200">
+                                <label asp-for="MontoInteres" class="form-label fw-bold">
+                                    <i class="bi bi-cash text-primary"></i> Monto Interés
+                                </label>
+                                <input asp-for="MontoInteres" id="MontoInteres" class="form-control" value="@Model?.MontoInteres" readonly />
+                            </div>
+                        </div>
+
+                        <!-- Mora y Capital -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3" data-aos="fade-left" data-aos-delay="300">
+                                <label asp-for="MontoMora" class="form-label fw-bold">
+                                    <i class="bi bi-exclamation-triangle-fill text-danger"></i> Monto Mora
+                                </label>
+                                <input asp-for="MontoMora" id="MontoMora" class="form-control monto" type="number" step="0.01" value="@Model?.MontoMora" />
+                            </div>
+                            <div class="col-md-6 mb-3" data-aos="fade-right" data-aos-delay="400">
+                                <label asp-for="MontoCapital" class="form-label fw-bold">
+                                    <i class="bi bi-cash-stack text-success"></i> Abono a Capital
+                                </label>
+                                <input asp-for="MontoCapital" id="MontoCapital" class="form-control monto" type="number" step="0.01" value="@Model?.MontoCapital" />
+                            </div>
+                        </div>
+
+                        <!-- Total -->
+                        <div class="mb-3" data-aos="zoom-in" data-aos-delay="500">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-currency-exchange text-success"></i> Total a Pagar
+                            </label>
+                            <input id="TotalPagadoVisual" class="form-control fw-bold text-success" value="@Model?.TotalPagado" readonly />
+                            <input type="hidden" asp-for="TotalPagado" id="TotalPagado" value="@Model?.TotalPagado" />
+                        </div>
+
+                        <!-- Observación -->
+                        <div class="mb-3" data-aos="fade-up" data-aos-delay="600">
+                            <label asp-for="Observacion" class="form-label fw-bold">
+                                <i class="bi bi-pencil-square"></i> Observación
+                            </label>
+                            <textarea asp-for="Observacion" class="form-control" rows="2">@Model?.Observacion</textarea>
+                        </div>
+
+                        @if (ViewBag.CuotaId != null)
+                        {
+                            <input type="hidden" name="cuotaId" value="@ViewBag.CuotaId" />
+                        }
+
+                        <!-- Botones -->
+                        <div class="d-flex justify-content-between mt-4" data-aos="zoom-in" data-aos-delay="700">
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left-circle"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary" id="btnGuardar">
+                                <i class="bi bi-save"></i> Guardar Pago
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function calcularInteres() {
+            let prestamo = document.getElementById("PrestamoId");
+            let frecuencia = document.getElementById("Frecuencia")?.value;
+            if (!prestamo) return;
+
+            let option = prestamo.options[prestamo.selectedIndex];
+            let original = parseFloat(option?.getAttribute("data-original")) || 0;
+            let interesPorc = parseFloat(option?.getAttribute("data-interes")) || 0;
+
+            let interesMonto = original * (interesPorc / 100);
+            if (frecuencia === "Quincenal") interesMonto /= 2;
+
+            document.getElementById("PorcentajeInteres").value = interesPorc + " %";
+            document.getElementById("MontoInteres").value = interesMonto.toFixed(2);
+
+            calcularTotal();
+        }
+
+        function calcularTotal() {
+            let interes = parseFloat(document.getElementById("MontoInteres").value) || 0;
+            let mora = parseFloat(document.getElementById("MontoMora").value) || 0;
+            let capital = parseFloat(document.getElementById("MontoCapital").value) || 0;
+            let total = interes + mora + capital;
+
+            document.getElementById("TotalPagadoVisual").value = total.toFixed(2);
+            document.getElementById("TotalPagado").value = total.toFixed(2);
+        }
+
+        document.getElementById("PrestamoId")?.addEventListener("change", function () {
+            let option = this.options[this.selectedIndex];
+            let fecha = option.getAttribute("data-fecha");
+            if (fecha) {
+                document.getElementById("FechaPago").value = fecha;
+            }
+            calcularInteres();
+        });
+
+        document.getElementById("Frecuencia")?.addEventListener("change", calcularInteres);
+
+        document.querySelectorAll(".monto").forEach(input => {
+            input.addEventListener("input", calcularTotal);
+        });
+
+        window.addEventListener("load", () => {
+            let prestamo = document.getElementById("PrestamoId");
+            if (prestamo) {
+                let option = prestamo.options[prestamo.selectedIndex];
+                if (option) {
+                    document.getElementById("FechaPago").value = option.getAttribute("data-fecha") || "";
+                    let interesPorc = parseFloat(option.getAttribute("data-interes")) || 0;
+                    let original = parseFloat(option.getAttribute("data-original")) || 0;
+                    let interesMonto = original * (interesPorc / 100);
+
+                    document.getElementById("PorcentajeInteres").value = interesPorc + " %";
+                    document.getElementById("MontoInteres").value = interesMonto.toFixed(2);
+                }
+                calcularTotal();
+            }
+        });
+    </script>
+
+    <!-- 🔹 AOS Animations -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 900,
+            offset: 100,
+            easing: 'ease-in-out',
+            once: true
+        });
+    </script>
+
+    <style>
+        .header-gradient {
+            background: linear-gradient(90deg, #3b82f6 0%, #22c55e 100%);
+            border: 0;
+            padding: 0.9rem 1.25rem;
+        }
+    </style>
+}

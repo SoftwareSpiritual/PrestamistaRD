@@ -1,0 +1,137 @@
+﻿@model PrestamistaRD.Models.Prestamo
+@{
+    ViewData["Title"] = "Nuevo Préstamo";
+    var clientes = ViewBag.Clientes as List<PrestamistaRD.Models.Cliente>;
+}
+
+<div class="container mt-4" data-aos="fade-up">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 rounded-4" data-aos="zoom-in">
+                <div class="card-header text-white text-center rounded-top-4"
+                     style="background: linear-gradient(135deg, #0d6efd, #20c997);">
+                    <h3 class="mb-0 fw-bold">
+                        <i class="bi bi-cash-coin"></i> Registrar Préstamo
+                    </h3>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Create" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <!-- Cliente -->
+                        <div class="mb-3" data-aos="fade-right">
+                            <label asp-for="ClienteId" class="form-label fw-bold">
+                                <i class="bi bi-person text-primary"></i> Cliente
+                            </label>
+                            <select asp-for="ClienteId" class="form-select" required>
+                                <option value="">-- Seleccione un cliente --</option>
+                                @foreach (var c in clientes)
+                                {
+                                    <option value="@c.Id">@c.NombreCompleto</option>
+                                }
+                            </select>
+                            <span asp-validation-for="ClienteId" class="text-danger"></span>
+                        </div>
+
+                        <!-- Capital -->
+                        <div class="mb-3" data-aos="fade-left">
+                            <label asp-for="MontoCapital" class="form-label fw-bold">
+                                <i class="bi bi-cash-stack text-success"></i> Monto Capital
+                            </label>
+                            <input asp-for="MontoCapital" class="form-control" type="number" step="0.01"
+                                   placeholder="Ej: 50000.00" required />
+                            <span asp-validation-for="MontoCapital" class="text-danger"></span>
+                        </div>
+
+                        <!-- Porcentaje de interés -->
+                        <div class="mb-3" data-aos="fade-right">
+                            <label asp-for="PorcentajeMensual" class="form-label fw-bold">
+                                <i class="bi bi-percent text-warning"></i> Porcentaje (%)
+                            </label>
+                            <input asp-for="PorcentajeMensual" class="form-control" type="number" step="0.01"
+                                   placeholder="Ej: 5.00" required />
+                            <span asp-validation-for="PorcentajeMensual" class="text-danger"></span>
+                        </div>
+
+                        <!-- Fecha de desembolso -->
+                        <div class="mb-3" data-aos="fade-left">
+                            <label asp-for="FechaDesembolso" class="form-label fw-bold">
+                                <i class="bi bi-calendar-check text-info"></i> Fecha Desembolso
+                            </label>
+                            <input asp-for="FechaDesembolso" class="form-control" type="date" required />
+                            <span asp-validation-for="FechaDesembolso" class="text-danger"></span>
+                        </div>
+
+                        <!-- Día de pago -->
+                        <div class="mb-3" data-aos="fade-right">
+                            <label asp-for="DiaPago" class="form-label fw-bold">
+                                <i class="bi bi-calendar-event text-danger"></i> Fecha de Pago
+                            </label>
+                            <input asp-for="DiaPago" class="form-control" type="date" required />
+                            <span asp-validation-for="DiaPago" class="text-danger"></span>
+                        </div>
+
+                        <!-- Opción de préstamo a plazo definido -->
+                        <div class="mb-3 form-check" data-aos="fade-left">
+                            <input asp-for="EsPlazoDefinido" type="checkbox" class="form-check-input" id="EsPlazoDefinido" />
+                            <label class="form-check-label fw-bold" for="EsPlazoDefinido">
+                                Préstamo a plazo definido
+                            </label>
+                        </div>
+
+                        <!-- Número de meses -->
+                        <div class="mb-3" id="mesesContainer" style="display:none;" data-aos="fade-up">
+                            <label asp-for="NumeroMeses" class="form-label fw-bold">
+                                <i class="bi bi-calendar-range text-success"></i> Número de meses
+                            </label>
+                            <input asp-for="NumeroMeses" class="form-control" type="number" min="1"
+                                   placeholder="Ej: 12" />
+                            <span asp-validation-for="NumeroMeses" class="text-danger"></span>
+                        </div>
+
+                        <!-- Observación -->
+                        <div class="mb-3" data-aos="fade-up">
+                            <label asp-for="Observacion" class="form-label fw-bold">
+                                <i class="bi bi-pencil-square text-secondary"></i> Observación
+                            </label>
+                            <textarea asp-for="Observacion" class="form-control" rows="2"
+                                      placeholder="Escriba observaciones adicionales..."></textarea>
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="d-flex justify-content-between mt-4" data-aos="zoom-in">
+                            <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4">
+                                <i class="bi bi-arrow-left-circle"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary rounded-pill px-4">
+                                <i class="bi bi-save"></i> Guardar Préstamo
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" /> <!-- ✅ Esto activa validaciones en cliente -->
+    <!-- AOS Animations -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+    <script>
+        // Mostrar/ocultar campo Número de Meses
+        document.getElementById("EsPlazoDefinido").addEventListener("change", function () {
+            document.getElementById("mesesContainer").style.display = this.checked ? "block" : "none";
+        });
+
+        // Inicializar AOS
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 120,
+            easing: "ease-in-out"
+        });
+    </script>
+}
